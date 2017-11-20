@@ -1,72 +1,50 @@
 <!DOCTYPE html>
-<p>STA 6443</p>
-<p>Objective #1:&nbsp;</p>
-<p class="p1">Controlling indoor climate accounts for most of the energy used in buildings. There is not only concern for the cost of energy but also concern for waste. In some European countries, buildings are legally bound to conform to appropriate minimum requirements regarding energy. The goal is to build an appropriate model&nbsp;to predict the <strong><em>cooling load variable (i.e., Coolload)</em></strong></p>
-<p>Data Exploration</p>
-<ul>
-<li>While exploring the data we found that there were no missing values with a sample size of 768 observations.</li>
-<li>In addition, there is a decent distribution between the levels of the categorical variables making the parameter estimates more reliable and stable.</li>
-<li>In the Pearson Correlation Matrix, we can observe the roof and height variables to have the highest correlation in similar magnitude to cooling load. RC and Surface are next most correlated variables with cooling load. Must observe for any potential multicollinearity since there is a high R value between these two pair of variables. Orient and Glazing Area Distribution were the least correlated with cooling load.</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model Building</p>
-<ul>
-<li>First, a forced entry regression model was created to provide a framework to work with. The result yielded a significant overall model while accounting for about 89% of the variance of cooling load. All the variables were significant except for the Orient and Glazing Area Distribution. Considering stepwise at the 10% level yielded the same model, these are the variables that we will include in our preliminary model. However, after observing significant tolerance values, we can detect the presence of multicollinearity therefore we dropped the roof and surface variables from the model because of the originally observed by the high correlation of Pearson correlation for RC vs Surface and Roof vs Height. On the plus side, the coefficient of determination only slightly dropped from 0.8904 to 0.88380. The final model that we were left with contained RC, Height and Glazing.</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model assessment</p>
-<ul>
-<li>By looking at the predicted vs the residual plot and the Q-Q plot, we see the model violates the homogeneity of assumption and the normality assumption. We can see more extreme residuals in higher predicted values paired with a deviation to normality at the tails. In order to improve model fit, we removed the outliers based on the values with a Cook&rsquo;s distance above the cutoff. This resulted in a model that satisfies the normality assumption along with a more homogenous spread of residuals. The individual coefficients changed minimally indicating prediction stability.</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model Summary</p>
-<ul>
-<li>The final model with the removal of outliers results in a model that accounts for about 93% of the variance of cooling load, F(5,700) = 1918.61, p &lt; 0.001. We used a height of 4 and glazing area of 0% as reference groups to interpret each variable as they increase in their respective values. As you go from a building with a height of 4 to a height of 7 the cooling load significantly increases by about 21 kWh/m<sup>2</sup> holding all other variables constant, t(700) = 65.83, p&lt; 0.001. Similarly, we can also observe that an increase in level of the glazing area proportion, results in a higher amount of cooling load. Conversely, a one unit increase in Relative Compactness results in a significant decrease of about 25 kWh/m<sup>2</sup> of cooling load, t(700) = -17.20, p &lt; 0.001. For applicational purposes, most be aware that RC increases in decimal values in the data. Given that the Pearson Correlation coefficients between all the variables and heat load were similar to that of cool load while paired with the fact that head load and cool load were highly correlated, we would do a similar process to the one we just did to predict heating load. &nbsp;However, while increased glazing area might mean more sunlight coming in therefore requiring more cooling load, on a day with ample sunlight might mean less heating load but this hypothesis must be tested.</li>
-</ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>Objective #2:</p>
-<p class="p1">The goal of this project is to build a model that predicts the probability of an individual making more than $50,000 per year versus making $50,000 or less (i.e., the Salary variable).</p>
-<p class="p1">&nbsp;</p>
-<p>Data Exploration</p>
-<ul>
-<li>We found 13 observations with no salary outcome and one incorrectly labeled observation (24720). After removing the empty observations and correcting the numeric label, we proceeded with the model.</li>
-<li>We conducted Chi-Square Test for all categorical variables vs Salary and found all tests to be significant. However, the observed cell counts for some levels contained few observations if any at all. There was a tendency for a high concentration of observations in specific levels across the all categorical variables. This could make individual dummy parameters in the model unstable.
-<ul>
-<li>Due to the low count/no count in some levels of the variable Country (and for easier interpretation), we decided to only have 2 dummy variables. Since United States contained almost 90% of the observations, we created variable that indicated whether the observation is in United States vs any other country.</li>
-</ul>
-</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model Building</p>
-<ul>
-<li>Given that stepwise and force entry regression resulted in the same model, the final model includes age, workclass, weight, education, martial, occupation, relationship, race, gender, hours and country.</li>
-<li>We decided to use predict salary = 0 (income less than $50,000) because there were more observations in this group.</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model Assessment</p>
-<ul>
-<li>After using a new cut off based on the highest F-value, our final model has AUC of 0.888. We decided to make the levels with the most observations as reference group for simplicity.</li>
-<li>We observe a significant Hosmer and Lemeshow Goodness-of-Fit Test result however, due to the large sample size and that it depends markedly on the number of groups, we decide to continue with this model. On the other hand, we observe a significant Likelihood Ratio indicating a better model fit than the empty model.</li>
-</ul>
-<p>&nbsp;</p>
-<p>Model Summary</p>
-<ul>
-<li>We can see that age increases there is a slightly lower probability for having an income less or equal to $50,000.</li>
-<li>Similarly, we see a negative relationship between education and probability of lower than 50,000 salary. We can see that when compared to a Bachelor degree, the more education the observations acquired the less likely to have an income less than or equal to 50,000 while any education less than Bachelor results in higher probabilities for the same result.</li>
-<li>We observe that when being compared to being Married to a civilian spouse, all single statues have higher probabilities of obtaining an income less than $50,000. Same goes for almost all married status (except for being married to a military spouse but this estimate is not statistically significant).</li>
-<li>For occupation, we used Prof-specialty as the reference group. The only level that had lower odds of obtaining an income lower than $50,000 than Prof-specialty and statistically significant is Exce-managerial. Tech-support and Protective-serve did have slightly lower odds than Pro-specialty but were non-significant.</li>
-<li>When compared to Husbands, Wife and Not-in-family status resulted in significantly lower odds for having an income less than or equal to $50,000. While being own-child resulted in higher odds. All other levels were not statically significant.</li>
-<li>We used White as a reference group and found all other levels of Race to have significantly higher odds of having a salary of less than equal to $50,000 except for Amer-Indian-Eskimo.</li>
-<li>Not too surprisingly, as hours worked per week decreased the odds of having a salary of less than $50,000.</li>
-<li>Finally, we observed that a country not named the United States has higher odds of having a salary less than $50,000.</li>
-</ul>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
 <html class="ods_4bdbc057-8217-4da5-881b-55de56f248e1" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
 <meta charset="utf-8"/>
 <meta content="SAS 9.4" name="generator"/>
+<div id="objective-1" class="section level1">
+<h1>Objective #1:</h1>
+<p>Controlling indoor climate accounts for most of the energy used in buildings. There is not only concern for the cost of energy but also concern for waste. In some European countries, buildings are legally bound to conform to appropriate minimum requirements regarding energy. The goal is to build an appropriate model to predict the cooling load variable (i.e., Coolload)</p>
+<div id="data-exploration" class="section level2">
+<h2>Data Exploration</h2>
+<p>While exploring the data we found that there were no missing values with a sample size of 768 observations. In addition, there is a decent distribution between the levels of the categorical variables making the parameter estimates more reliable and stable. In the Pearson Correlation Matrix, we can observe the roof and height variables to have the highest correlation in similar magnitude to cooling load. RC and Surface are next most correlated variables with cooling load. Must observe for any potential multicollinearity since there is a high R value between these two pair of variables. Orient and Glazing Area Distribution were the least correlated with cooling load.</p>
+</div>
+<div id="model-building" class="section level2">
+<h2>Model Building</h2>
+<p>First, a forced entry regression model was created to provide a framework to work with. The result yielded a significant overall model while accounting for about 89% of the variance of cooling load. All the variables were significant except for the Orient and Glazing Area Distribution. Considering stepwise at the 10% level yielded the same model, these are the variables that we will include in our preliminary model. However, after observing significant tolerance values, we can detect the presence of multicollinearity therefore we dropped the roof and surface variables from the model because of the originally observed by the high correlation of Pearson correlation for RC vs Surface and Roof vs Height. On the plus side, the coefficient of determination only slightly dropped from 0.8904 to 0.88380. The final model that we were left with contained RC, Height and Glazing.</p>
+</div>
+<div id="model-assessment" class="section level2">
+<h2>Model assessment</h2>
+<p>By looking at the predicted vs the residual plot and the Q-Q plot, we see the model violates the homogeneity of assumption and the normality assumption. We can see more extreme residuals in higher predicted values paired with a deviation to normality at the tails. In order to improve model fit, we removed the outliers based on the values with a Cook’s distance above the cutoff. This resulted in a model that satisfies the normality assumption along with a more homogenous spread of residuals. The individual coefficients changed minimally indicating prediction stability.</p>
+</div>
+<div id="model-summary" class="section level2">
+<h2>Model Summary</h2>
+<p>The final model with the removal of outliers results in a model that accounts for about 93% of the variance of cooling load, F(5,700) = 1918.61, p &lt; 0.001. We used a height of 4 and glazing area of 0% as reference groups to interpret each variable as they increase in their respective values. As you go from a building with a height of 4 to a height of 7 the cooling load significantly increases by about 21 kWh/m2 holding all other variables constant, t(700) = 65.83, p&lt; 0.001. Similarly, we can also observe that an increase in level of the glazing area proportion, results in a higher amount of cooling load. Conversely, a one unit increase in Relative Compactness results in a significant decrease of about 25 kWh/m2 of cooling load, t(700) = -17.20, p &lt; 0.001. For applicational purposes, most be aware that RC increases in decimal values in the data. Given that the Pearson Correlation coefficients between all the variables and heat load were similar to that of cool load while paired with the fact that head load and cool load were highly correlated, we would do a similar process to the one we just did to predict heating load. However, while increased glazing area might mean more sunlight coming in therefore requiring more cooling load, on a day with ample sunlight might mean less heating load but this hypothesis must be tested.</p>
+</div>
+</div>
+<div id="objective-2" class="section level1">
+<h1>Objective #2:</h1>
+<p>The goal of this project is to build a model that predicts the probability of an individual making more than $50,000 per year versus making $50,000 or less (i.e., the Salary variable).</p>
+<div id="data-exploration-1" class="section level2">
+<h2>Data Exploration</h2>
+<p>We found 13 observations with no salary outcome and one incorrectly labeled observation (24720). After removing the empty observations and correcting the numeric label, we proceeded with the model. We conducted Chi-Square Test for all categorical variables vs Salary and found all tests to be significant. However, the observed cell counts for some levels contained few observations if any at all. There was a tendency for a high concentration of observations in specific levels across the all categorical variables. This could make individual dummy parameters in the model unstable. Due to the low count/no count in some levels of the variable Country (and for easier interpretation), we decided to only have 2 dummy variables. Since United States contained almost 90% of the observations, we created variable that indicated whether the observation is in United States vs any other country.</p>
+</div>
+<div id="model-building-1" class="section level2">
+<h2>Model Building</h2>
+<p>Given that stepwise and force entry regression resulted in the same model, the final model includes age, workclass, weight, education, martial, occupation, relationship, race, gender, hours and country. We decided to use predict salary = 0 (income less than $50,000) because there were more observations in this group.</p>
+</div>
+<div id="model-assessment-1" class="section level2">
+<h2>Model Assessment</h2>
+<p>-After using a new cut off based on the highest F-value, our final model has AUC of 0.888. We decided to make the levels with the most observations as reference group for simplicity. -We observe a significant Hosmer and Lemeshow Goodness-of-Fit Test result however, due to the large sample size and that it depends markedly on the number of groups, we decide to continue with this model. On the other hand, we observe a significant Likelihood Ratio indicating a better model fit than the empty model.</p>
+</div>
+<div id="model-summary-1" class="section level2">
+<h2>Model Summary</h2>
+<p>We can see that age increases there is a slightly lower probability for having an income less or equal to $50,000. Similarly, we see a negative relationship between education and probability of lower than 50,000 salary. We can see that when compared to a Bachelor degree, the more education the observations acquired the less likely to have an income less than or equal to 50,000 while any education less than Bachelor results in higher probabilities for the same result. We observe that when being compared to being Married to a civilian spouse, all single statues have higher probabilities of obtaining an income less than $50,000. Same goes for almost all married status (except for being married to a military spouse but this estimate is not statistically significant). For occupation, we used Prof-specialty as the reference group. The only level that had lower odds of obtaining an income lower than $50,000 than Prof-specialty and statistically significant is Exce-managerial. Tech-support and Protective-serve did have slightly lower odds than Pro-specialty but were non-significant. When compared to Husbands, Wife and Not-in-family status resulted in significantly lower odds for having an income less than or equal to $50,000. While being own-child resulted in higher odds. All other levels were not statically significant. We used White as a reference group and found all other levels of Race to have significantly higher odds of having a salary of less than equal to $50,000 except for Amer-Indian-Eskimo. Not too surprisingly, as hours worked per week decreased the odds of having a salary of less than $50,000. Finally, we observed that a country not named the United States has higher odds of having a salary less than $50,000.</p>
+</div>
+</div>
+
 <title>Results: Gonzalez_Exam2.sas</title>
 <style>
 /*<![CDATA[*/
