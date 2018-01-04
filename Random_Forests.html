@@ -420,7 +420,7 @@ for(i in 1:100){
 max_class_rate.SMOTE = max(class_rate.SMOTE)
 print(max_class_rate.SMOTE)</code></pre>
 <pre><code>## [1] 0.9166667</code></pre>
-<p>In order to do an apples-to-apples comparison, we use the same amount of trees used to create the random forest with the lowest OOB error rate for the training set while also validating the SMOTE training data on the exact test set previously used. We arrive at the moment of truth where we finally get to see whether these new synthetic observations are for real or just a lousy scam. The random forest built with the SMOTE data set has a legendary classification test rate of (……..this is the final drumroll, I promise) 91.6%! SMOTE came to the rescue as we were able to increase our classification rate by a staggering 33.3 percentage points!</p>
+<p>In order to do an apples-to-apples comparison, we use the same amount of trees used to create the random forest with the lowest OOB error rate for the training set while also validating the SMOTE training data on the exact test set previously used. We arrive at the moment of truth where we finally get to see whether these new synthetic observations are for real or just a lousy scam. The random forest built with the SMOTE data set has a legendary classification test rate of (……..this is the final drumroll, I promise) 91.6%! SMOTE came to the rescue as we were able to increase our classification rate by a staggering 33.3 percentage points (or an increment of 57.1%)!</p>
 <pre class="r"><code>x = data.frame(class_rate.SMOTE)
 x$NumTrees = seq.int(nrow(x))
 
